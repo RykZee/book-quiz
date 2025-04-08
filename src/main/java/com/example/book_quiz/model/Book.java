@@ -12,6 +12,7 @@ public record Book(
         @JsonProperty("author_name")
         List<String> authorName,
         String title,
-        Integer first_publish_year,
+        @JsonProperty("first_publish_year")
+        Integer firstPublishYear,
         List<String> isbn
 ) {}
