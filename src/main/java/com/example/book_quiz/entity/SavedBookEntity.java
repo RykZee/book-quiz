@@ -1,19 +1,17 @@
 package com.example.book_quiz.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
 @Table(name = "books")
-@Getter
-@Setter
+@Data
 public class SavedBookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(name = "authorkey")
     private List<String> authorKey;
