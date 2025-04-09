@@ -3,6 +3,7 @@ package com.example.book_quiz.controller;
 import com.example.book_quiz.model.Book;
 import com.example.book_quiz.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public List<Book> getBooks(@RequestParam String query) {
-        return bookService.searchBooks(query);
+    public ResponseEntity<List<Book>> getBooks(@RequestParam String query) {
+        return ResponseEntity.ok(bookService.searchBooks(query));
     }
 }

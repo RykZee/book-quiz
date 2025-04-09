@@ -21,7 +21,6 @@ public class BookService {
         List<Book> result = new ArrayList<>();
         try {
             result = client.searchBooks(query);
-            System.out.println(result);
         } catch (Exception e) {
             // TODO: Implement proper logic
             System.err.println(e.getMessage());
@@ -29,4 +28,4 @@ public class BookService {
         }
         return result;
     }
-} 
+}
