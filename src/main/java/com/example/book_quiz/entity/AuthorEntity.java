@@ -24,7 +24,7 @@ public class AuthorEntity {
 
     private String fullName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "author_books",
             joinColumns = @JoinColumn(name = "author_id"),

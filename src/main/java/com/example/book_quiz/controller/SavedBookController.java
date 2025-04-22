@@ -27,6 +27,6 @@ public class SavedBookController {
 
     @PostMapping
     public ResponseEntity<Book> saveBook(@RequestBody Book book, @AuthenticationPrincipal CustomUserDetails user) {
-        return ResponseEntity.ok(book);
+        return ResponseEntity.ok(savedBookService.saveBook(book, user));
     }
 }

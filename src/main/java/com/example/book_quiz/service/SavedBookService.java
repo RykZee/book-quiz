@@ -2,9 +2,12 @@ package com.example.book_quiz.service;
 
 import com.example.book_quiz.entity.AuthorEntity;
 import com.example.book_quiz.entity.SavedBookEntity;
+import com.example.book_quiz.entity.UserEntity;
 import com.example.book_quiz.model.Book;
+import com.example.book_quiz.model.CustomUserDetails;
 import com.example.book_quiz.repository.AuthorRepository;
 import com.example.book_quiz.repository.SavedBookRepository;
+import com.example.book_quiz.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +25,17 @@ import java.util.stream.StreamSupport;
 public class SavedBookService {
     private final SavedBookRepository savedBookRepository;
     private final AuthorRepository authorRepository;
+    private final UserRepository userRepository;
     private final Logger logger;
 
     @Autowired
     public SavedBookService(SavedBookRepository savedBookRepository,
                             AuthorRepository authorRepository,
+                            UserRepository userRepository,
                             @Qualifier("savedBookServiceLogger") Logger logger) {
         this.savedBookRepository = savedBookRepository;
         this.authorRepository = authorRepository;
+        this.userRepository = userRepository;
         this.logger = logger;
     }
 
@@ -53,11 +59,15 @@ public class SavedBookService {
     }
 
     @Transactional
-    public Book saveBook(Book book) {
+    public Book saveBook(Book book, CustomUserDetails userDetails) {
         logger.debug("Saving book {}", book.title());
+
+        UserEntity user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new RuntimeException("User with " + userDetails.getId() + " couldn't be found"));
 
         SavedBookEntity bookEntityInDatabase = savedBookRepository.findById(book.id()).orElse(null);
         if (bookEntityInDatabase != null) {
+            user.getSavedBooks().add(bookEntityInDatabase);
             return convertEntityToModel(bookEntityInDatabase);
         }
 
@@ -82,6 +92,7 @@ public class SavedBookService {
             authorEntity.getBooks().add(savedBookEntity);
         }
 
+        user.getSavedBooks().add(savedBookEntity);
         return book;
     }
 
@@ -97,7 +108,6 @@ public class SavedBookService {
 
             for (String missingAuthor : missingAuthors) {
                 AuthorEntity authorEntity = new AuthorEntity(null, missingAuthor, new HashSet<>());
-                authorRepository.save(authorEntity);
                 authors.add(authorEntity);
             }
         }

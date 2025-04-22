@@ -15,6 +15,9 @@ public class CustomUserDetails implements UserDetails {
         this.password = password;
     }
 
+    public Long getId() {
+        return userDto.id();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

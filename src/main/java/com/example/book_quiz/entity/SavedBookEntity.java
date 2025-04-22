@@ -19,18 +19,11 @@ public class SavedBookEntity {
     private String id;
     private String title;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany(mappedBy = "books", cascade = CascadeType.ALL)
     private Set<AuthorEntity> authors = new HashSet<>();
     private String publishedDate;
     private String isbn10;
     private String isbn13;
-
-    public void addAuthor(AuthorEntity authorEntity) {
-        authors.add(authorEntity);
-        for (SavedBookEntity book : authorEntity.getBooks()) {
-
-        }
-    }
 
     @Override
     public boolean equals(Object o) {
