@@ -41,9 +41,9 @@ public class BookControllerTest {
         book.setId("OL123456A");
         book.setTitle("Test Book");
         book.setPublishedDate("2023");
+        book.created();
 
-        AuthorEntity author = new AuthorEntity();
-        author.setFullName("Test Author");
+        AuthorEntity author = new AuthorEntity("Test Author");
 
         author.getBooks().add(book);
         book.getAuthors().add(author);

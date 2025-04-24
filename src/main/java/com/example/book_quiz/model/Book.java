@@ -62,7 +62,7 @@ public class Book {
             this.authors = authors
                     .stream()
                     .filter(Objects::nonNull)
-                    .filter(String::isEmpty)
+                    .filter(name -> !name.isBlank())
                     .toList();
             return this;
         }
@@ -83,7 +83,7 @@ public class Book {
         }
 
         public Builder createdAt(LocalDateTime createdAt) {
-            if (updatedAt == null) {
+            if (createdAt == null) {
                 throw new BookValidationException("Cannot explicitly set createdAt to null");
             }
             this.createdAt = createdAt;

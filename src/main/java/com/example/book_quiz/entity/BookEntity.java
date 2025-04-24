@@ -45,6 +45,7 @@ public class BookEntity extends BaseEntity {
     public List<String> getAuthorFullNames() {
         return authors.stream()
                 .map(AuthorEntity::getFullName)
+                .map(String::new)
                 .toList();
     }
 

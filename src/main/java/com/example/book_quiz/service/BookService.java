@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -107,9 +106,8 @@ public class BookService {
                     .filter(authorName -> !currentAuthorNames.contains(authorName))
                     .toList();
 
-            for (String missingAuthor : missingAuthors) {
-                AuthorEntity authorEntity = new AuthorEntity(null, missingAuthor, new HashSet<>());
-                authorEntity.created();
+            for (String missingAuthorName : missingAuthors) {
+                AuthorEntity authorEntity = new AuthorEntity(missingAuthorName);
                 authors.add(authorEntity);
             }
         }

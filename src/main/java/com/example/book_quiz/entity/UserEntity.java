@@ -1,21 +1,25 @@
 package com.example.book_quiz.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity extends BaseEntity {
+
+    public UserEntity(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.role = "USER";
+        created();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +34,6 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String role;
 
-    @Builder.Default
     @OneToMany(cascade = CascadeType.ALL)
     private Set<BookEntity> savedBooks = new HashSet<>();
 }

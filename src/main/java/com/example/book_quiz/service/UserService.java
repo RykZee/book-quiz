@@ -18,12 +18,7 @@ public class UserService {
             throw new RuntimeException("Username already exists");
         }
 
-        UserEntity user = UserEntity.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .role("USER")
-                .build();
-        user.created();
+        UserEntity user = new UserEntity(username, passwordEncoder.encode(password));
 
         UserEntity savedUser = userRepository.save(user);
         return new UserDto(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());
