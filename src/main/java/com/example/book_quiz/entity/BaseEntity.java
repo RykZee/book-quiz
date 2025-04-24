@@ -11,11 +11,11 @@ import java.time.ZoneOffset;
 @Setter
 @MappedSuperclass
 public class BaseEntity {
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 
     public void created() {
-        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        final var now = LocalDateTime.now(ZoneOffset.UTC);
         createdAt = now;
         updatedAt = now;
     }

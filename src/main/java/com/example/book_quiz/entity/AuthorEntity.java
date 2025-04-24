@@ -30,7 +30,7 @@ public class AuthorEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private Set<SavedBookEntity> books = new HashSet<>();
+    private Set<BookEntity> books = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

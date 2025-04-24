@@ -32,5 +32,5 @@ public class UserEntity extends BaseEntity {
 
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<SavedBookEntity> savedBooks = new HashSet<>();
+    private Set<BookEntity> savedBooks = new HashSet<>();
 }
