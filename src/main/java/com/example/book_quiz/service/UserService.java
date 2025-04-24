@@ -23,6 +23,7 @@ public class UserService {
                 .password(passwordEncoder.encode(password))
                 .role("USER")
                 .build();
+        user.created();
 
         UserEntity savedUser = userRepository.save(user);
         return new UserDto(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());

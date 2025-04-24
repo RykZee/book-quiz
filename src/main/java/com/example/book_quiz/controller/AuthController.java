@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -25,7 +25,7 @@ public class AuthController {
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/test-authentication")
     public ResponseEntity<Map<String, String>> login(Authentication authentication) {
         return ResponseEntity.ok(Map.of(
                 "message", "Success",
