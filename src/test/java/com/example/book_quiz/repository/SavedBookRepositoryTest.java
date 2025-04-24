@@ -1,12 +1,10 @@
 package com.example.book_quiz.repository;
 
 import com.example.book_quiz.entity.AuthorEntity;
-import com.example.book_quiz.entity.SavedBookEntity;
+import com.example.book_quiz.entity.BookEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,7 +16,7 @@ public class SavedBookRepositoryTest {
 
     @Test
     void testSaveAndFindBook() {
-        SavedBookEntity book = new SavedBookEntity();
+        BookEntity book = new BookEntity();
         book.setId("OL123456A");
         book.setTitle("Test Book");
         book.setPublishedDate("2023");
@@ -28,11 +26,11 @@ public class SavedBookRepositoryTest {
         author.getBooks().add(book);
         book.getAuthors().add(author);
 
-        SavedBookEntity savedBook = savedBookRepository.save(book);
+        BookEntity savedBook = savedBookRepository.save(book);
         assertThat(savedBook.getId()).isNotNull();
-        Iterable<SavedBookEntity> books = savedBookRepository.findAll();
+        Iterable<BookEntity> books = savedBookRepository.findAll();
         assertThat(books).hasSize(1);
-        SavedBookEntity actual = books.iterator().next();
+        BookEntity actual = books.iterator().next();
         assertThat(actual.getId()).isEqualTo("OL123456A");
         assertThat(actual.getTitle()).isEqualTo("Test Book");
         assertThat(actual.getPublishedDate()).isEqualTo("2023");

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +19,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorEntity extends BaseEntity {
+
+    public AuthorEntity(String fullname) {
+        this.fullName = fullname;
+        created();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +37,7 @@ public class AuthorEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "author_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private Set<SavedBookEntity> books = new HashSet<>();
+    private Set<BookEntity> books = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

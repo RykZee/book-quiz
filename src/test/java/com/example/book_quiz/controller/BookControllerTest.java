@@ -1,7 +1,7 @@
 package com.example.book_quiz.controller;
 
 import com.example.book_quiz.entity.AuthorEntity;
-import com.example.book_quiz.entity.SavedBookEntity;
+import com.example.book_quiz.entity.BookEntity;
 import com.example.book_quiz.repository.AuthorRepository;
 import com.example.book_quiz.repository.SavedBookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +13,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class SavedBookControllerTest {
+public class BookControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,13 +37,13 @@ public class SavedBookControllerTest {
         savedBookRepository.deleteAll();
         authorRepository.deleteAll();
 
-        SavedBookEntity book = new SavedBookEntity();
+        BookEntity book = new BookEntity();
         book.setId("OL123456A");
         book.setTitle("Test Book");
         book.setPublishedDate("2023");
+        book.created();
 
-        AuthorEntity author = new AuthorEntity();
-        author.setFullName("Test Author");
+        AuthorEntity author = new AuthorEntity("Test Author");
 
         author.getBooks().add(book);
         book.getAuthors().add(author);
@@ -56,7 +54,7 @@ public class SavedBookControllerTest {
     @Test
     @WithMockUser
     void testGetAllBooks() throws Exception {
-        mockMvc.perform(get("/api/v1/saved-book"))
+        mockMvc.perform(get("/api/v1/book"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title").value("Test Book"))
