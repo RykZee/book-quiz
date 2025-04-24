@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SavedBookEntity {
+public class SavedBookEntity extends BaseEntity {
 
     @Id
     private String id;
@@ -24,6 +24,9 @@ public class SavedBookEntity {
     private String publishedDate;
     private String isbn10;
     private String isbn13;
+
+    @ManyToOne
+    private UserEntity createdByUser;
 
     @Override
     public boolean equals(Object o) {

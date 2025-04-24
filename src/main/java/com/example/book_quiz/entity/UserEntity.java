@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity {
+public class UserEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String role;
 
-    @OneToMany
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<SavedBookEntity> savedBooks = new HashSet<>();
 }

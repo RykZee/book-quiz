@@ -43,8 +43,8 @@ public class SavedBookService {
     public List<Book> getAllSavedBooks() {
         logger.debug("Fetching all saved books");
 
-        List<SavedBookEntity> savedBookEntities = StreamSupport
-                .stream(savedBookRepository.findAll().spliterator(), true)
+        List<SavedBookEntity> savedBookEntities = savedBookRepository.findAll()
+                .parallelStream()
                 .toList();
 
         logger.debug("Found {} saved books in the database", savedBookEntities.size());
@@ -85,11 +85,14 @@ public class SavedBookService {
                 authors,
                 book.publishedDate(),
                 book.isbn10(),
-                book.isbn13()
+                book.isbn13(),
+                user
         );
+        savedBookEntity.created();
 
         for (AuthorEntity authorEntity : authors) {
             authorEntity.getBooks().add(savedBookEntity);
+            authorEntity.updated();
         }
 
         user.getSavedBooks().add(savedBookEntity);
@@ -108,6 +111,7 @@ public class SavedBookService {
 
             for (String missingAuthor : missingAuthors) {
                 AuthorEntity authorEntity = new AuthorEntity(null, missingAuthor, new HashSet<>());
+                authorEntity.created();
                 authors.add(authorEntity);
             }
         }
