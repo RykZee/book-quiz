@@ -1,6 +1,8 @@
 package com.example.book_quiz.controller;
 
+import com.example.book_quiz.entity.AuthorEntity;
 import com.example.book_quiz.entity.SavedBookEntity;
+import com.example.book_quiz.repository.AuthorRepository;
 import com.example.book_quiz.repository.SavedBookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,28 +31,37 @@ public class SavedBookControllerTest {
     @Autowired
     private SavedBookRepository savedBookRepository;
 
+    @Autowired
+    private AuthorRepository authorRepository;
+
     @BeforeEach
     void setup() {
         savedBookRepository.deleteAll();
+        authorRepository.deleteAll();
 
         SavedBookEntity book = new SavedBookEntity();
+        book.setId("OL123456A");
         book.setTitle("Test Book");
-        book.setAuthorName(List.of("Test Author"));
-        book.setAuthorKey(List.of("OL123456A"));
-        book.setFirstPublishYear(2023);
-        
-        savedBookRepository.save(book);
+        book.setPublishedDate("2023");
+
+        AuthorEntity author = new AuthorEntity();
+        author.setFullName("Test Author");
+
+        author.getBooks().add(book);
+        book.getAuthors().add(author);
+
+        authorRepository.save(author);
     }
 
     @Test
     @WithMockUser
     void testGetAllBooks() throws Exception {
-        mockMvc.perform(get("/saved-book"))
+        mockMvc.perform(get("/api/v1/saved-book"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title").value("Test Book"))
-                .andExpect(jsonPath("$[0].author_name[0]").value("Test Author"))
-                .andExpect(jsonPath("$[0].author_key[0]").value("OL123456A"))
-                .andExpect(jsonPath("$[0].first_publish_year").value(2023));
+                .andExpect(jsonPath("$[0].authors[0]").value("Test Author"))
+                .andExpect(jsonPath("$[0].id").value("OL123456A"))
+                .andExpect(jsonPath("$[0].publishedDate").value("2023"));
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/saved-book")
+@RequestMapping("/api/v1/saved-book")
 public class SavedBookController {
     private final SavedBookService savedBookService;
 
